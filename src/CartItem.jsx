@@ -9,23 +9,44 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+  let total = 0;
+  cart.forEach(item => {
+    const cost = parseFloat(item.cost.toString().replace('$', '')); // якщо $ нема — нічого страшного
+    total += cost * item.quantity;
+  });
+  return total;
+};
+const calculateTotalQuantity = () => {
+ return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
   };
 
   const handleContinueShopping = (e) => {
-   
+  e.preventDefault();
+  onContinueShopping(); // Call the function passed as a prop to continue shopping
+  e.target.blur(); // Remove focus from the button to prevent accidental double clicks
+  e.target.style.backgroundColor = 'transparent'; // Reset button background color
+  e.target.style.color = 'black'; // Reset button text color
+  e.target.style.border = '1px solid black'; // Reset button border   
   };
-
+const handleCheckoutShopping = (e) => {
+  alert('Functionality to be added for future reference');
+};
 
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-   
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name)); // If quantity is 1, remove the item from the cart
+    }
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item.name)); // Dispatch action to remove the item from the cart
   };
 
   // Calculate total cost based on quantity for an item

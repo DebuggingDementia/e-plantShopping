@@ -2,20 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
+import { useDispatch } from 'react-redux';
+
+
+
+
+
 function ProductList({ onHomeClick }) {
+     const dispatch = useDispatch(); 
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
-
-const handleAddToCart = (product) => {
-  dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-
-  setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-    ...prevState, // Spread the previous state to retain existing entries
-    [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-  }));
-};
-
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -263,6 +260,17 @@ const handleAddToCart = (product) => {
         e.preventDefault();
         setShowCart(false);
     };
+
+    
+    
+    const handleAddToCart = (product) => {
+  dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
+
+  setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
+    ...prevState, // Spread the previous state to retain existing entries
+    [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
+  }));
+};
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -285,7 +293,7 @@ const handleAddToCart = (product) => {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-                    {plantsArray.map((category, index) => ( // Loop through each category in plantsArray
+               {plantsArray.map((category, index) => ( // Loop through each category in plantsArray
   <div key={index}> {/* Unique key for each category div */}
     <h1>
       <div>{category.category}</div> {/* Display the category name */}
